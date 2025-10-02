@@ -51,14 +51,82 @@ PROJECT_APPS = [
 THIRD_PARTY_APPS = [
     'rest_framework',
     'channels',
-    'ckeditor',
-    'ckeditor_uploader'
+    'django_ckeditor_5',
 ]
 
 INSTALLED_APPS = DJANGO_APPS + PROJECT_APPS + THIRD_PARTY_APPS
 
-CKEDITOR_CONFIGS = {"default": {"toolbar": "full", "autoParagraph": False}}
-CKEDITOR_UPLOAD_PATH = "media/"
+# CKEDITOR_5_CONFIGS = {
+#     "default": {
+#         "toolbar": "full", 
+#         "autoParagraph": False
+#         }
+#     }
+
+# CKEditor 5
+customColorPalette = [
+    {'color': 'hsl(4, 90%, 58%)', 'label': 'Red'},
+    {'color': 'hsl(340, 82%, 52%)', 'label': 'Pink'},
+    {'color': 'hsl(291, 64%, 42%)', 'label': 'Purple'},
+    {'color': 'hsl(262, 52%, 47%)', 'label': 'Deep Purple'},
+    {'color': 'hsl(231, 48%, 48%)', 'label': 'Indigo'},
+    {'color': 'hsl(207, 90%, 54%)', 'label': 'Blue'},
+]
+
+CKEDITOR_5_CONFIGS = {
+    'default': {
+        'toolbar': {
+            'items': [
+                'heading', '|',
+                'bold', 'italic', 'underline', 'strikethrough', 'link', '|',
+                'fontSize', 'fontFamily', 'fontColor', 'fontBackgroundColor', '|',
+                'bulletedList', 'numberedList', 'todoList', '|',
+                'outdent', 'indent', 'alignment', '|',
+                'blockQuote', 'codeBlock', 'insertTable', 'mediaEmbed', 'imageUpload', '|',
+                'undo', 'redo', 'removeFormat', 'sourceEditing'
+            ],
+            'shouldNotGroupWhenFull': True,
+        },
+        'image': {
+            'toolbar': [
+                'imageTextAlternative', '|',
+                'imageStyle:alignLeft', 'imageStyle:alignCenter',
+                'imageStyle:alignRight', 'imageStyle:side'
+            ]
+        },
+        'table': {
+            'contentToolbar': [
+                'tableColumn', 'tableRow', 'mergeTableCells',
+                'tableProperties', 'tableCellProperties'
+            ],
+            'tableProperties': {
+                'borderColors': customColorPalette,
+                'backgroundColors': customColorPalette
+            },
+            'tableCellProperties': {
+                'borderColors': customColorPalette,
+                'backgroundColors': customColorPalette
+            }
+        },
+        'list': {
+            'properties': {
+                'styles': True,
+                'startIndex': True,
+                'reversed': True,
+            }
+        },
+        'heading': {
+            'options': [
+                {'model': 'paragraph', 'title': 'Paragraph', 'class': 'ck-heading_paragraph'},
+                {'model': 'heading1', 'view': 'h1', 'title': 'Heading 1', 'class': 'ck-heading_heading1'},
+                {'model': 'heading2', 'view': 'h2', 'title': 'Heading 2', 'class': 'ck-heading_heading2'},
+                {'model': 'heading3', 'view': 'h3', 'title': 'Heading 3', 'class': 'ck-heading_heading3'}
+            ]
+        }
+    }
+}
+
+CKEDITOR_5_FILE_UPLOAD_PERMISSION = "staff"  # "staff", "authenticated", "any"
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -195,3 +263,4 @@ CACHES = {
 }
 
 CHANNELS_ALLOWED_ORIGINS = "http://localhost:3000"
+

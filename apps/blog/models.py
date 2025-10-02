@@ -3,7 +3,7 @@ import uuid
 from django.db import models
 from django.utils import timezone
 from django.utils.text import slugify
-from ckeditor.fields import RichTextField
+from django_ckeditor_5.fields import CKEditor5Field
 
 
 def blog_thumbnail_directory(instance, filename):
@@ -44,8 +44,7 @@ class Post(models.Model):
     title = models.CharField(max_length=128)
     description = models.CharField(max_length=256)
     # content = models.TextField()
-    content = RichTextField()
-
+    content = CKEditor5Field('Content', config_name='default')
     thumbnail = models.ImageField(upload_to=blog_thumbnail_directory)
 
     keywords = models.CharField(max_length=128)
