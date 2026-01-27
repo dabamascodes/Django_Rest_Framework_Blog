@@ -1,19 +1,38 @@
 from rest_framework.generics import ListAPIView, RetrieveAPIView
+from rest_framework.views import APIView
+from rest_framework.response import Response
 
 from .models import Post, Heading
 from .serializers import PostListSerializer, PostSerializer, HeadingSerializer
 
 
-class PostListView(ListAPIView):
-    queryset = Post.postobjects.all()
-    serializer_class = PostListSerializer
+# class PostListView(ListAPIView):
+#     queryset = Post.postobjects.all()
+#     serializer_class = PostListSerializer
+    
+
+class PostListView(APIView):
+    def get(self, request, *args, **kwargs):
+        
+        posts = Post.postobjects.all()
+        
+        serialized_posts = PostListSerializer(posts, many=True).data
+        return Response(serialized_posts)
+
+
+# class PostDetailView(RetrieveAPIView):
+#     queryset = Post.postobjects.all()
+#     serializer_class = PostSerializer
+#     lookup_field = 'slug'
 
 
 class PostDetailView(RetrieveAPIView):
-    queryset = Post.postobjects.all()
-    serializer_class = PostSerializer
-    lookup_field = 'slug'
-    
+    def get(self, request, slug):
+        post = Post.postobjects.get(slug=slug)
+        serialized_post = PostSerializer(post).data  
+        post.views += 1
+        post.save()  
+        return Response(serialized_post)
     
 class PostHeadingsView(ListAPIView):
     serializer_class = HeadingSerializer

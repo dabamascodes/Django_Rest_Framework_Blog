@@ -48,6 +48,7 @@ class PostListSerializer(serializers.ModelSerializer):
             "thumbnail",
             "slug",
             "category",
+            "views"
         ]
     
 
