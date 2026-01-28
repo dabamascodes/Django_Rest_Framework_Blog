@@ -3,7 +3,8 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 
 from .models import Post, Heading
-from .serializers import PostListSerializer, PostSerializer, HeadingSerializer
+from .serializers import PostListSerializer, PostSerializer, HeadingSerializer, PostView
+from .utils import get_client_ip
 
 
 # class PostListView(ListAPIView):
@@ -30,8 +31,16 @@ class PostDetailView(RetrieveAPIView):
     def get(self, request, slug):
         post = Post.postobjects.get(slug=slug)
         serialized_post = PostSerializer(post).data  
-        post.views += 1
-        post.save()  
+        # post.views += 1
+        # post.save()  
+        
+        client_ip = get_client_ip(request)
+        
+        if PostView.objects.filter(post = post, ip_address = client_ip).exists():
+            return Response(serialized_post)
+        
+        PostView.objects.create(post = post, ip_address = client_ip) 
+        
         return Response(serialized_post)
     
 class PostHeadingsView(ListAPIView):
